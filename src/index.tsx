@@ -1,20 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 
-class Square extends React.Component {
-  render() {
+import './index.css';
+import {none, None, Option} from "fp-ts/lib/Option";
+
+type SquareProps = {
+    value: number
+}
+enum Player {
+    X = "X",
+    O = "O"
+}
+type SquareState = Option<Player>
+const Square: React.FC<SquareProps> = props => {
+    const [state, setState] = React.useState(none);
+
     return (
-      <button className="square">
-        {/* TODO */}
+      <button className="square" onClick={() => alert("klick klick")} >
+        {props.value}
       </button>
     );
-  }
-}
+};
 
 class Board extends React.Component {
   renderSquare(i: number) {
-    return <Square />;
+    return <Square value={i} />;
   }
 
   render() {
