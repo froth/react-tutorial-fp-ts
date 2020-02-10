@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import './index.css';
-import {none, None, Option} from "fp-ts/lib/Option";
+import {none, Option, some} from "fp-ts/lib/Option";
+import {absurd} from "fp-ts/lib/function";
 
 type SquareProps = {
     value: number
@@ -13,11 +14,22 @@ enum Player {
 }
 type SquareState = Option<Player>
 const Square: React.FC<SquareProps> = props => {
-    const [state, setState] = React.useState(none);
+    const [state, setState] = React.useState<SquareState>(none);
+
+    const renderState = (state: SquareState) => {
+        switch (state._tag) {
+            case 'None':
+                return "";
+            case 'Some':
+                return state.value;
+            default:
+                absurd(state)
+        }
+    };
 
     return (
-      <button className="square" onClick={() => alert("klick klick")} >
-        {props.value}
+      <button className="square" onClick={() => setState(some(Player.X))} >
+          {renderState(state)}
       </button>
     );
 };
